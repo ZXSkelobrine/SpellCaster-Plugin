@@ -80,12 +80,17 @@ public class Bearer {
 		}
 	}
 
-	@SuppressWarnings("unused")
 	public static void armourBearer(Entity damager, Entity damagee, double damage) {
 		if (damagee instanceof Player && damager instanceof Player) {
 			Player attacker = (Player) damager;
 			Player attackee = (Player) damagee;
 			attackee.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 20, 10), true);
+			attacker.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 20, 10), true);
+			try {
+				attackee.setHealth(attackee.getHealth() + damage);
+			} catch (Exception e) {
+				attackee.setHealth(20);
+			}
 		}
 	}
 }

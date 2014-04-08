@@ -80,6 +80,7 @@ public class Bearer {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	public static void armourBearer(Entity damager, Entity damagee, double damage) {
 		if (damagee instanceof Player && damager instanceof Player) {
 			Player attacker = (Player) damager;

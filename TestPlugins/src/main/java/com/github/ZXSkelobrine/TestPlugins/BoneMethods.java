@@ -91,8 +91,19 @@ public class BoneMethods {
 							kill(entity, false);
 						}
 					}
-					player.setHealth(player.getHealth() + entities.size());
-					player.setFoodLevel(player.getFoodLevel() - entities.size());
+					try {
+						player.setHealth(player.getHealth() + entities.size());
+					} catch (Exception e) {
+						player.setHealth(20);
+					}
+					try {
+						player.setFoodLevel(player.getFoodLevel() - entities.size());
+					} catch (Exception e) {// Should be
+											// java.lang.IllegalArgumentException
+											// but I want to make sure I get all
+											// of them.
+						player.setFoodLevel(0);
+					}
 					if (entities.size() != 0) {
 						GeneralMethods.broadcast(player.getDisplayName() + " has cast Soul Suck");
 					} else {

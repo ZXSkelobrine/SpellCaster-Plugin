@@ -72,7 +72,7 @@ public class BoneMethods {
 	@SuppressWarnings("deprecation")
 	public static void getSpell(String[] split, final Player player) {
 		if (split[0].contains("Left") && split[1].contains("Left") && split[2].contains("Left")) {
-			GeneralMethods.broadcast(player.getDisplayName() + " has cast Soul Suck");
+
 			thread = new Thread() {
 				@Override
 				public void run() {
@@ -92,6 +92,12 @@ public class BoneMethods {
 						}
 					}
 					player.setHealth(player.getHealth() + entities.size());
+					player.setFoodLevel(player.getFoodLevel() - entities.size());
+					if (entities.size() != 0) {
+						GeneralMethods.broadcast(player.getDisplayName() + " has cast Soul Suck");
+					} else {
+						GeneralMethods.broadcast(player.getDisplayName() + " has failed to cast Soul Suck");
+					}
 					try {
 						thread.join();
 					} catch (InterruptedException e) {

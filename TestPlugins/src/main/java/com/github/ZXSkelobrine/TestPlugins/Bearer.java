@@ -4,6 +4,8 @@ import org.bukkit.entity.Animals;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class Bearer {
 	public static void getBearer(Entity damager, Entity damagee, double damage, String bearer) {
@@ -79,6 +81,10 @@ public class Bearer {
 	}
 
 	public static void armourBearer(Entity damager, Entity damagee, double damage) {
-		if()
+		if (damagee instanceof Player && damager instanceof Player) {
+			Player attacker = (Player) damager;
+			Player attackee = (Player) damagee;
+			attackee.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 20, 10), true);
+		}
 	}
 }

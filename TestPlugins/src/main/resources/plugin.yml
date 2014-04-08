@@ -1,0 +1,10 @@
+name: TestPlugin
+main: com.github.ZXSkelobrine.TestPlugins.TestPlugins
+version: 0.0.1
+commands:
+    wand:
+      description: Do wand stuff.
+      usage: /wand [name]
+    spellcaster:
+      description: Spellcaster stuff
+      usage: /spellcaster [team] [red/blue]

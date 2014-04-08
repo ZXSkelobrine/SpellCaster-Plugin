@@ -101,7 +101,7 @@ public class BoneMethods {
 					} catch (Exception e) {// Should be
 											// java.lang.IllegalArgumentException
 											// but I want to make sure I get all
-											// of them.
+											// of them if any more a called.
 						player.setFoodLevel(0);
 					}
 					if (entities.size() != 0) {

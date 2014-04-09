@@ -8,6 +8,9 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.FurnaceRecipe;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class TestPlugins extends JavaPlugin {
@@ -18,20 +21,25 @@ public class TestPlugins extends JavaPlugin {
 		@Override
 		public void run() {
 			while (running) {
-				if (hungerT) {
-					for (Player player : Bukkit.getOnlinePlayers()) {
-						if (player.getFoodLevel() != 20) {
-							player.setFoodLevel(player.getFoodLevel() + 2);
-						}
-					}
-					try {
-						Thread.sleep(1000);
+				for (Player player : Bukkit.getOnlinePlayers()) {
+					if (hungerT && player.getFoodLevel() != 20) {
+						player.setFoodLevel(player.getFoodLevel() + 2);
+					} else {
 						System.out.print("");
-					} catch (InterruptedException e) {
-						e.printStackTrace();
 					}
-				} else {
+					if (player.hasMetadata("inv")) {
+						if (player.getMetadata("inv").get(0).asInt() > 0) {
+							player.setMetadata("inv", new FixedMetadataValue(TestPlugins.this, player.getMetadata("inv").get(0).asInt() - 1));
+						}
+					} else {
+						player.setMetadata("inv", new FixedMetadataValue(TestPlugins.this, 0));
+					}
+				}
+				try {
+					Thread.sleep(1000);
 					System.out.print("");
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
 			}
 		}
@@ -39,11 +47,13 @@ public class TestPlugins extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
+		this.saveDefaultConfig();
 		log.info("Enabled");
 		getServer().getPluginManager().registerEvents(new Listeners(log, this), this);
 		hungerThread.start();
 		new RecipeInitiation(getServer());
 		getCommand("spellcaster").setExecutor(new Commands(this, log));
+		getServer().addRecipe(new FurnaceRecipe(new ItemStack(Material.BRICK, 1), Material.STONE));
 	}
 
 	@Override

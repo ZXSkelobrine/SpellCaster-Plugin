@@ -12,11 +12,14 @@ import java.util.logging.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Skeleton;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
@@ -24,6 +27,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 
 public class Listeners implements Listener {
@@ -47,9 +51,9 @@ public class Listeners implements Listener {
 		}
 		if (event.getPlayer().getItemInHand().getType().equals(Material.BONE)) {
 			if (event.getAction().equals(Action.LEFT_CLICK_AIR) || event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
-				BoneMethods.setDisplayName(true, event);
+				BoneMethods.setDisplayName(true, event, plugin);
 			} else if (event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-				BoneMethods.setDisplayName(false, event);
+				BoneMethods.setDisplayName(false, event, plugin);
 			}
 		}
 	}
@@ -160,5 +164,19 @@ public class Listeners implements Listener {
 			e.printStackTrace();
 		}
 		pw.close();
+	}
+
+	@EventHandler
+	public void onEntityTargetEvent(EntityTargetEvent event) {
+		if (event.getTarget() instanceof Player) {
+			Player player = (Player) event.getTarget();
+			if (player.hasMetadata("inv")) {
+				if (player.getMetadata("inv").get(0).asInt() > 0) {
+					if (event.getEntity() instanceof Skeleton) {
+						event.setCancelled(true);
+					}
+				}
+			}
+		}
 	}
 }

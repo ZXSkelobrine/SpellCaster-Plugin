@@ -13,6 +13,8 @@ import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.plugin.Plugin;
 
 public class BoneMethods {
 	static Thread thread;
@@ -42,7 +44,7 @@ public class BoneMethods {
 		}
 	}
 
-	public static void setDisplayName(boolean left, PlayerInteractEvent event) {
+	public static void setDisplayName(boolean left, PlayerInteractEvent event, Plugin plugin) {
 		String currentDisplay = event.getPlayer().getItemInHand().getItemMeta().getDisplayName();
 		if (left) {
 			if (currentDisplay == null || currentDisplay.equals("Bone")) {
@@ -57,12 +59,12 @@ public class BoneMethods {
 				GeneralMethods.setName(GeneralMethods.getName(event.getPlayer()) + " - Right ", event.getPlayer());
 			}
 		}
-		check(event.getPlayer().getItemInHand().getItemMeta().getDisplayName(), event.getPlayer());
+		check(event.getPlayer().getItemInHand().getItemMeta().getDisplayName(), event.getPlayer(), plugin);
 	}
 
-	public static void check(String displayName, Player player) {
+	public static void check(String displayName, Player player, Plugin plugin) {
 		if (displayName.split("-").length == 3) {
-			getSpell(displayName.split("-"), player);
+			getSpell(displayName.split("-"), player, plugin);
 			ItemMeta im = player.getItemInHand().getItemMeta();
 			im.setDisplayName("Bone");
 			player.getItemInHand().setItemMeta(im);
@@ -70,7 +72,7 @@ public class BoneMethods {
 	}
 
 	@SuppressWarnings("deprecation")
-	public static void getSpell(String[] split, final Player player) {
+	public static void getSpell(String[] split, final Player player, Plugin plugin) {
 		if (split[0].contains("Left") && split[1].contains("Left") && split[2].contains("Left")) {
 
 			thread = new Thread() {
@@ -122,6 +124,9 @@ public class BoneMethods {
 		if (split[0].contains("Left") && split[1].contains("Left") && split[2].contains("Right")) {
 			GeneralMethods.broadcast(player.getDisplayName() + " has cast Swarm");
 			spawnMobs(3, player.getTargetBlock(null, 20), player.getWorld());
+		}
+		if (split[0].contains("Left") && split[1].contains("Right") && split[2].contains("Right")) {
+			player.setMetadata("sc-invun", new FixedMetadataValue(plugin, plugin.getConfig().getInt("inv")));
 		}
 	}
 

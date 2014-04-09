@@ -1,0 +1,3 @@
+#This is the config file for SpellCaster the values are below.
+#This is the amount of time the player who casts Swarm will stay invulnerable
+inv: 5

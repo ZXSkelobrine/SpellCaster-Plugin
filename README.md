@@ -4,7 +4,7 @@ This is a plugin I got inspired to make after player on the wynncraft server. It
 
 Features:  
 -Use blaze rod as wand to cast the following spells:  
-    -Phantom Arrow  
+    -Phantom Arrow
     -Lightning  
     -Explosion  
     -Heal  
